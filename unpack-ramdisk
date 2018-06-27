@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ -z "$1" ]
+    then
+        echo "unpack-ramdisk - Unpacks Linux gzipped CPIO (ELD encoded) ramdisk"
+        echo "USAGE unpack-ramdisk [filename.gz] [Noah's Kernel Tools]"
+        exit
+fi
+
+fullName=${1}
+basename="$(basename $fullName .gz)"
+extractedTempName="$basename.temp"
+
+rm -r $basename
+
+gunzip --keep $fullName
+mv $basename $extractedTempName
+mkdir $basename
+mv $extractedTempName $basename
+cd $basename
+cpio -idmv < $extractedTempName
+rm $extractedTempName
+cd ../

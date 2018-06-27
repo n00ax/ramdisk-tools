@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ -z "$1" ]
+    then
+        echo "pack-ramdisk - Packs Linux gzipped CPIO (ELD encoded) ramdisk"
+        echo "USAGE pack-ramdisk [directory] [Noah's Kernel Tools]"
+        exit
+fi
+
+fullRamdiskDirectory=$1
+fullRamdiskFile="$1.gz"
+
+cd $fullRamdiskDirectory
+find . | cpio --create --format='newc' 2> /dev/null | gzip > ../$fullRamdiskFile
